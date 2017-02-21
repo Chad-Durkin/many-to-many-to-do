@@ -2,6 +2,8 @@
 <form action="/tasks/new" method="post">
   <label for="task-description">Task description:</label>
   <input id="task-description" name="task-description" type="text">
+  <label for="task-date">Due Date: </label>
+  <input type="date" name="task-date" id="task-date">
   <select name="category-id">
     @foreach (var category in Model)
     {

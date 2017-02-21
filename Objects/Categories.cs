@@ -85,22 +85,23 @@ namespace ToDoList
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("SELECT * FROM tasks WHERE category_id = @CategoryId;", conn);
+      SqlCommand cmd = new SqlCommand("SELECT * FROM tasks WHERE category_id = @CategoryId ORDER BY due_date DESC;", conn);
       SqlParameter categoryIdParameter = new SqlParameter();
       categoryIdParameter.ParameterName = "@CategoryId";
       categoryIdParameter.Value = this.GetId();
       cmd.Parameters.Add(categoryIdParameter);
       SqlDataReader rdr = cmd.ExecuteReader();
 
-      List<Task> tasks = new List<Task> {};
+      List<Task> AllTasks = new List<Task> {};
 
       while(rdr.Read())
       {
-        int taskId = rdr.GetInt32(0);
-        string taskDescription = rdr.GetString(1);
-        int taskCategoryId = rdr.GetInt32(2);
-        Task newTask = new Task(taskDescription, taskCategoryId, taskId);
-        tasks.Add(newTask);
+          int taskId = rdr.GetInt32(0);
+          string taskDescription = rdr.GetString(1);
+          int taskCategoryId = rdr.GetInt32(2);
+          string taskDueDate = rdr.GetDateTime(3).ToString("yyyy-MM-dd");
+          Task newTask = new Task(taskDescription, taskDueDate, taskCategoryId, taskId);
+          AllTasks.Add(newTask);
       }
       if (rdr != null)
       {
@@ -110,7 +111,7 @@ namespace ToDoList
       {
         conn.Close();
       }
-      return tasks;
+      return AllTasks;
     }
     //Save Category
     public void Save()

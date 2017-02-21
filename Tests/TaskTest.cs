@@ -27,8 +27,8 @@ namespace ToDoList
     public void Test_Equal_ReturnsTrueIfDescriptionsAreTheSame()
     {
       //Arrange, Act
-      Task firstTask = new Task("Mow the lawn", 1);
-      Task secondTask = new Task("Mow the lawn", 1);
+      Task firstTask = new Task("Mow the lawn", "2017-02-17", 1);
+      Task secondTask = new Task("Mow the lawn", "2017-02-17", 1);
 
       //Assert
       Assert.Equal(firstTask, secondTask);
@@ -38,7 +38,7 @@ namespace ToDoList
     public void Test_Save_SavesToDatabase()
     {
       //Arrange
-      Task testTask = new Task("Mow the lawn", 1);
+      Task testTask = new Task("Mow the lawn", "2017-02-17", 1);
 
       //Act
       testTask.Save();
@@ -53,7 +53,7 @@ namespace ToDoList
     public void Test_Save_AssignsIdToObject()
     {
       //Arrange
-      Task testTask = new Task("Mow the lawn", 1);
+      Task testTask = new Task("Mow the lawn", "2017-02-17", 1);
 
       //Act
       testTask.Save();
@@ -70,7 +70,7 @@ namespace ToDoList
     public void Test_Find_FindsTaskInDatabase()
     {
       //Arrange
-      Task testTask = new Task("Mow the lawn", 1);
+      Task testTask = new Task("Mow the lawn", "2017-02-17", 1);
       testTask.Save();
 
       //Act
@@ -78,6 +78,22 @@ namespace ToDoList
 
       //Assert
       Assert.Equal(testTask, foundTask);
+    }
+
+    [Fact]
+    public void Test_DueDate_SavesInRightFormat()
+    {
+        //Arrange
+        string testDate = "2017-02-17";
+        string taskDate;
+        Task testTask = new Task("Mow the lawn", "2017-02-17", 1);
+        testTask.Save();
+
+        //Act
+        Task foundTask = Task.Find(testTask.GetId());
+        taskDate = foundTask.GetDueDate();
+        //Assert
+        Assert.Equal(testDate, taskDate);
     }
 
     public void Dispose()
