@@ -40,7 +40,12 @@ namespace ToDoList
             };
             Post["/tasks/delete"] = _ => {
                 Task.DeleteAll();
-                return View["cleared.cshtml"];
+                return View["tasks_cleared.cshtml"];
+            };
+            Post["/categories/clear"] = _ => {
+                Category.DeleteAll();
+                Task.DeleteAll();
+                return View["categories_cleared.cshtml"];
             };
             Get["/categories/{id}"] = parameters => {
                 Dictionary<string, object> model = new Dictionary<string, object>();
@@ -49,6 +54,24 @@ namespace ToDoList
                 model.Add("category", SelectedCategory);
                 model.Add("tasks", CategoryTasks);
                 return View["category.cshtml", model];
+            };
+            Get["category/edit/{id}"] = parameters => {
+                Category SelectedCategory = Category.Find(parameters.id);
+                return View["category_edit.cshtml", SelectedCategory];
+            };
+            Patch["category/edit/{id}"] = parameters => {
+              Category SelectedCategory = Category.Find(parameters.id);
+              SelectedCategory.Update(Request.Form["category-name"]);
+              return View["success.cshtml"];
+            };
+            Get["category/delete/{id}"] = parameters => {
+              Category SelectedCategory = Category.Find(parameters.id);
+              return View["category_delete.cshtml", SelectedCategory];
+            };
+            Delete["category/delete/{id}"] = parameters => {
+              Category SelectedCategory = Category.Find(parameters.id);
+              SelectedCategory.Delete();
+              return View["success.cshtml"];
             };
         }
     }
