@@ -47,14 +47,14 @@ namespace ToDoList
                 Task.DeleteAll();
                 return View["categories_cleared.cshtml"];
             };
-            Get["tasks/{id}"] = parameters => {
+            Get["/tasks/{id}"] = parameters => {
                 Dictionary<string, object> model = new Dictionary<string, object>();
                 Task SelectedTask = Task.Find(parameters.id);
                 List<Category> TaskCategories = SelectedTask.GetCategories();
                 List<Category> AllCategories = Category. GetAll();
                 model.Add("task", SelectedTask);
                 model.Add("taskCategories", TaskCategories);
-                mdoel.Add("allCategories", AllCategories);
+                model.Add("allCategories", AllCategories);
                 return View["task.cshtml", model];
             };
             Get["/categories/{id}"] = parameters => {
@@ -67,32 +67,58 @@ namespace ToDoList
                 model.Add("allTasks", AllTasks);
                 return View["category.cshtml", model];
             };
-            Post["task/add_category"] = _ => {
+            Patch["/categories/finished/{id}"] = parameters => {
+                Task isTaskDone = Task.Find(parameters.id);
+                isTaskDone.UpdateDone(1);
+                return View["index.cshtml"];
+            };
+            Post["/task/add_category"] = _ => {
               Category category = Category.Find(Request.Form["category-id"]);
               Task task = Task.Find(Request.Form["task-id"]);
               task.AddCategory(category);
               return View["success.cshtml"];
             };
-            Post["category/add_task"] = _ => {
+            Post["/category/add_task"] = _ => {
               Category category = Category.Find(Request.Form["category-id"]);
               Task task = Task.Find(Request.Form["task-id"]);
               category.AddTask(task);
               return View["success.cshtml"];
             };
-            Get["category/edit/{id}"] = parameters => {
+            // Get["/category/list"] = _ => {
+            //     Console.WriteLine(Request.Query("house work"));
+            //     Dictionary<string, object> model = new Dictionary<string, object>();
+            //     List<Category> allCategories = Category.GetAll();
+            //     foreach(var category in allCategories)
+            //     {
+            //         if(Request.Form[category.GetName()] != null)
+            //         {
+            //             List<Task> listTasks = category.GetTasks();
+            //             model.Add(category.GetName(), listTasks);
+            //         }
+            //     }
+            //     foreach(KeyValuePair<string, object> entry in model)
+            //     {
+            //         foreach(Task thisTask in entry.Value as List<Task>)
+            //         {
+            //             Console.WriteLine(thisTask.GetDescription());
+            //         }
+            //     }
+            //     return View["categories_multiple.cshtml", model];
+            // };
+            Get["/category/edit/{id}"] = parameters => {
                 Category SelectedCategory = Category.Find(parameters.id);
                 return View["category_edit.cshtml", SelectedCategory];
             };
-            Patch["category/edit/{id}"] = parameters => {
+            Patch["/category/edit/{id}"] = parameters => {
                 Category SelectedCategory = Category.Find(parameters.id);
                 SelectedCategory.Update(Request.Form["category-name"]);
                 return View["success.cshtml"];
             };
-            Get["category/delete/{id}"] = parameters => {
+            Get["/category/delete/{id}"] = parameters => {
                 Category SelectedCategory = Category.Find(parameters.id);
                 return View["category_delete.cshtml", SelectedCategory];
             };
-            Delete["category/delete/{id}"] = parameters => {
+            Delete["/category/delete/{id}"] = parameters => {
                 Category SelectedCategory = Category.Find(parameters.id);
                 SelectedCategory.Delete();
                 return View["success.cshtml"];

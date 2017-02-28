@@ -300,7 +300,8 @@ namespace ToDoList
                     int thisTaskId = queryReader.GetInt32(0);
                     string taskDescription = queryReader.GetString(1);
                     string taskDueDate = queryReader.GetDateTime(2).ToString("yyyy-MM-dd");
-                    Task foundTask = new Task(taskDescription, taskDueDate, thisTaskId);
+                    int taskDone = queryReader.GetByte(3);
+                    Task foundTask = new Task(taskDescription, taskDueDate, taskDone, thisTaskId);
                     tasks.Add(foundTask);
                 }
                 if(queryReader != null)

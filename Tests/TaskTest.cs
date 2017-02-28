@@ -159,6 +159,24 @@ namespace ToDoList
             Assert.Equal(testCategoryTasks, resultCategoryTasks);
         }
 
+        [Fact]
+        public void Test_Done_DoneIsSetToTrueOrFalse()
+        {
+            //Arrange
+            int result = 1;
+            Category testCategory = new Category("Home stuff");
+            testCategory.Save();
+
+            Task testTask = new Task("mow the lawn", "2017-02-17");
+            testTask.Save();
+
+            //Act
+            testTask.SetDone(1);
+
+            //Assert
+            Assert.Equal(result, testTask.GetDone());
+        }
+
         public void Dispose()
         {
             Category.DeleteAll();

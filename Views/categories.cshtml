@@ -15,6 +15,14 @@ else
     }
 
     </ul>
+    /*<h2>Choose Multiple Categories</h2>
+    <form action="/category/list" method="get">
+    @foreach (var category in Model)
+    {
+        <input type="checkbox" name="@category.GetName()" value="@category.GetId()">@category.GetName()<br>
+    }
+    <button type="submit">Display Tasks</button>
+    </form>*/
     <form action="/categories/clear" method="post">
     <button type="submit">Clear all categories</button>
     </form>

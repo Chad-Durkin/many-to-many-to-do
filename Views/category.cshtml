@@ -7,10 +7,18 @@
   <ul>
     @foreach (var task in @Model["categoryTasks"])
     {
-      <li>@task.GetDescription()</li>
+        if (@task.GetDone() == 0)
+        {
+            <li>@task.GetDescription() | <form action="/categories/finished/@task.GetId()" method="post"><input type="hidden" name="_method" value="PATCH"><input type="hidden" name="task-done" value="@task.GetId()"><button type="submit" name="button">Done</button></form></li>
+        }
+        else
+        {
+            <li>@task.GetDescription() | Task Finished</li>
+        }
     }
   </ul>
 }
+
 <h4>Add a task to this category:</h4>
 <form action='/category/add_task' method='post'>
   <input id='category-id' name='category-id' type='hidden' value='@Model["category"].GetId()'>
